@@ -1,0 +1,15 @@
+<form action="" method="POST">
+  <script
+    src="https://checkout.stripe.com/v2/checkout.js" class="stripe-button"
+    data-key="pk_live_2nTq0Du4Szdtfi4Xy6ZB9o3j"
+    data-amount="500"
+    data-name="League Draft"
+    data-description="League Draft $5"
+    data-image="/128x128.png">
+  </script>
+</form>
+{% if user.isBrad %}
+	<form action="" method="POST">
+	  <button type="submit" name="bradCode" value="bradCode">Brad Code</button>
+	</form>
+{% endif %}

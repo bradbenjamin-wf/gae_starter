@@ -1,0 +1,14 @@
+<script
+  src="https://www.dwolla.com/scripts/button.min.js" class="dwolla_button" type="text/javascript"
+  data-key="EOU/ph0UEpLMiNJ113Ggtk2V6zA+nT7NRfJN3ROppwg7DusVTz"
+  data-redirect="http://league-draft.appspot.com/dwollapayment"
+  data-label="Pay only $3 with Dwolla"
+  data-name="League Draft"
+  data-description="site to allow fantasy leagues to draft on their own timeframe with a chat"
+  data-amount="3.00"
+  data-guest-checkout="true"
+  data-type="simple"
+>
+</script>
+
+<!--  https://developers.dwolla.com/dev/pages/button#redirect  -->

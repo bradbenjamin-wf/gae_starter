@@ -1,0 +1,7 @@
+{%if msg %}
+{% autoescape off %}
+{{msg}}
+{% endautoescape %}
+<br/><br/>
+{% else %}
+{% endif %}
