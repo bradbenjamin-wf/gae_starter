@@ -35,7 +35,7 @@ def home():
         account.put()
     elif request.forms.get('stripeToken'):
         if account.upgraded:
-            logging.info("User {} attempeted to pay for an already-paid account".format(user.email()))
+            logging.info("User {} attempted to pay for an already-paid account".format(user.email()))
             warn_msg = "This account appears to have already paid"
         else:
             charge, msg = stripe_pay(500,request.forms.get('stripeToken'), user)
