@@ -21,33 +21,34 @@ JINJA_ENV = Environment(
 def home():
     user = users.get_current_user()
     login_url = users.create_login_url(request.path)
+    if not user:
+        return respond('home.html', {'login_url':login_url, 'user':user})
     account = None
     warn_msg = None
     success_msg = None
-    if user:
-        account = Account.get_or_insert(user.user_id(), user_id = user.user_id())
-        if not account.email:
-            account.email = user.email()
-        if request.forms.get('update_sites'):
-            site_urls = [request.forms.get('site' + str(i)) for i in range(1,6) if request.forms.get('site' + str(i))]
-            account.sites = site_urls
-            account.put()
-        elif request.forms.get('stripeToken'):
-            if account.upgraded:
-                logging.info("User {} attempeted to pay for an already-paid account".format(user.email()))
-                warn_msg = "This account appears to have already paid"
+    account = Account.get_or_insert(user.user_id(), user_id = user.user_id())
+    if not account.email:  # ensure this is set on account creation
+        account.email = user.email()
+    if request.forms.get('update_sites'):
+        site_urls = [request.forms.get('site' + str(i)) for i in range(1,6) if request.forms.get('site' + str(i))]
+        account.sites = site_urls
+        account.put()
+    elif request.forms.get('stripeToken'):
+        if account.upgraded:
+            logging.info("User {} attempeted to pay for an already-paid account".format(user.email()))
+            warn_msg = "This account appears to have already paid"
+        else:
+            charge, msg = stripe_pay(500,request.forms.get('stripeToken'), user)
+            if charge is not None:
+                success_msg = msg
+                chargejson = {'method':'Stripe', 'id': charge.id, 'created': charge.created, 'amount':charge.amount, 
+                              'type':charge.card.type, 'balance_transaction':charge.balance_transaction, 
+                              'description':charge.description}
+                account.payment_info = json.dumps(chargejson)
+                account.upgraded = True
+                account.put()
             else:
-                charge, msg = stripe_pay(500,request.forms.get('stripeToken'), user)
-                if charge is not None:
-                    success_msg = msg
-                    chargejson = {'method':'Stripe', 'id': charge.id, 'created': charge.created, 'amount':charge.amount, 
-                                  'type':charge.card.type, 'balance_transaction':charge.balance_transaction, 
-                                  'description':charge.description}
-                    account.payment_info = json.dumps(chargejson)
-                    account.upgraded = True
-                    account.put()
-                else:
-                    warn_msg = msg
+                warn_msg = msg
     return respond('home.html', {'login_url':login_url, 'user':user, 'account':account, 'warn_msg':warn_msg, 'success_msg':success_msg})
 
 
@@ -75,8 +76,9 @@ def site_check(user_id):
         failed_site_report = '\n'.join(failed_site_reports)
         message = mail.EmailMessage()
         message.sender = 'failures@gae_starter@appspotmail.com'
-        message.body = """
-        """.format
+        message.body = """Failures for your site on {}:
+        {}
+        """.format('downtime-toy.appspot.com', failed_site_report)
         message.subject = "Notification of site failures"
         message.to = account.email
         try:
@@ -86,6 +88,14 @@ def site_check(user_id):
             logging.warn("failed to send owner email to {} for failed sites.".format(account.email))
     else:
         logging.info("no failed sites for email {}".format(account.email))
+
+
+@route('/admin')
+def admin_page():
+    if users.is_current_user_admin():
+        return respond('404.html', {})
+    accounts = Account.query().fetch(limit=100)
+    return respond('admin.html', {'accounts':accounts})
 
 
 def main():
