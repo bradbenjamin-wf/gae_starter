@@ -1,0 +1,6 @@
+<table class="table table-condensed">
+<tr><th>Round</th><th>Overall</th><th>Player</th><th>Team</th><th>Position</th><th>Bye</th></tr>
+{% for pick in picks %}
+<tr><td>{{pick.round}}</td><td>{{pick.picknum}}<td>{{pick.player}}</td><td>{{pick.team}}</td><td>{{pick.pos}}</td><td>{{pick.bye}}</td></tr>
+{% endfor %}
+</table>

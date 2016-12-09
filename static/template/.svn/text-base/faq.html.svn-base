@@ -1,0 +1,13 @@
+{%extends "base.html"%}
+
+{%block title%}League Draft{%endblock%}
+
+{%block body%}
+  <h2>Frequently Asked Questions</h2>
+  <h6>Is League Draft secure?</h6>
+  <p>You may notice the URL does not start with https, so...not as secure as it could be.  
+  However, Payments are done through trusted vendors in a way that no personal data is passed to my servers or stored (only email address) so I think I have done a good job protecting you here.</p>
+  <li>Once active, Dwolla payments will redirect to Dwolla which uses SSL, so it's very secure</li>
+  <li>Stripe payments use encryption keys and they build a client-side token which gets sent to me to send to Stripe for payment verification</li> 
+
+{%endblock%}

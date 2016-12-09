@@ -1,0 +1,14 @@
+<strong>Player (Team-Pos) Bye ##,  Yahoo ADP ###</strong>
+{% for player in league.getPlayers %}
+<div class="{{player.pos}}"><a class="prefillPick" href="">{{player.player}}</a> ({{player.team}}-{{player.pos}}) Bye {{player.bye}}, Yahoo ADP {{player.adp}}</div>
+{% endfor %}
+{% if not league.getPlayers %}
+  <br/>No players found
+{% endif %}
+<script>
+$('a.prefillPick').click(function () {
+	event.preventDefault();
+    prefillPick($(this).text())
+    //$('#playerModal').modal('toggle');
+});
+</script>

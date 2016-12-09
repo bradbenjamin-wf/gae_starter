@@ -1,0 +1,15 @@
+{%extends "base.html"%}
+
+{%block title%}GAE Starter{%endblock%}
+
+
+{% block extrastyle %}
+{% endblock %}
+
+{%block body%}
+  Content goes here<br>
+  You can use data params like this: {{data.key1}} -> {{data.value2}}<br>
+  {% for val in data.list %}
+    <li>{{val}}</li>
+  {% endfor %}
+{%endblock%}

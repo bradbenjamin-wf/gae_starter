@@ -1,0 +1,37 @@
+{%extends "base.html"%}
+
+{%block title%}League Draft{%endblock%}
+
+{%block extrastyle %}
+<style> 
+  img.steps {padding-bottom:5px;}
+</style>
+{%endblock%}
+
+{%block body%}
+{% include 'msg.html' %}
+
+{% if requirePassword %}
+  To continue to Admin, please enter the league's password.<br/>
+  <form class="form-inline" action="" id="verify_email_form" method="post">
+	<label for="password">Password:</label><input type="password" id="password" name="password" class="input span3" placeholder="Password" />
+	<input type="submit" name="verify_email" class="btn btn-primary" value="Enter Admin Area" />
+  </form>
+
+{% else %}
+  {% if league.verified %}
+    <img class="steps" src="/img/mailgreen.jpg" /> Email has been verified<br/>
+    {% if league.paymentinfo %}
+    {% else %}
+    <img class="steps" src="/img/cartgray.jpg" /> Pay with your credit card using Stripe, it's super easy!<br/>
+      {% include "stripe.html" %}
+    <img class="steps" src="/img/checkgray.jpg" />  Double-check emails and start your league!
+    {% endif %}
+  {% else %}
+    <img class="steps" src="/img/mailgray.jpg" />  Please verify your email address by clicking the link in the email that was sent when your league was first created.<br/>
+    <img class="steps" src="/img/cartgray.jpg" />  After verification, you can pay with Stripe ($5 with credit card)<br/>
+    <img class="steps" src="/img/checkgray.jpg" />  Double-check emails and start your league!
+    
+  {% endif %}
+{% endif %}
+{%endblock%}
