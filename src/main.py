@@ -1,10 +1,17 @@
-import bottle
-from bottle import route, template, error, response
-from google.appengine.ext.webapp.util import run_wsgi_app
+
+# if you add a dependency to to requirements.txt, you need these 2 lines
+# before you use those dependencies, see lib/README.md
 from google.appengine.ext import vendor
 vendor.add('lib')
 
+import bottle
+import json
+from bottle import route, post, template, error, request, response
+from models import get_silly_data
 from core import respond
+from google.appengine.ext.webapp.util import run_wsgi_app
+
+
 
 
 @route('/')
@@ -21,6 +28,28 @@ def hardcoded_json_1():
                     'list': ['something3', 'something4', 'something5']}
     response.content_type = 'application/json'
     return json.dumps(example_data)
+
+
+@route('getuserdata/<user_id>')
+def getuserdata(user_id):
+    user_data = get_silly_data(user_id)
+    response.content_type = 'application/json'
+    return user_data.raw_data_as_json_str()
+
+
+@post('postuserdata/<user_id>')
+def postuserdata(user_id):
+    posted_data = request.forms.get('posted_data')
+    try:
+        parsed_data = json.loads(posted_data)
+    except ValueError:
+        response.status_code = 500
+        return 'Error parsing JSON post data'
+
+    user_data = get_silly_data(user_id)
+    user_data.raw_data = parsed_data
+    user_data.put()
+    return 'OK'
 
 
 bottle.debug(True)

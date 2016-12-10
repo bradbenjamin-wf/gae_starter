@@ -1,3 +1,7 @@
 *.pyc
 .idea/
 */.svn/
+lib/*
+
+# except don't ignore this file
+!lib/README.md

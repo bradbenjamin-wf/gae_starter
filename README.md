@@ -10,7 +10,7 @@ requirements
 ============
 virtual environment 2.7
 app engine python library
-pip install -r requirements.dev
+pip install -r requirements.dev -t lib/
 
 contrib
 =======
