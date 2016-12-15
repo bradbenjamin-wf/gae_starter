@@ -20,7 +20,7 @@ def index():
     return respond('index.html', params={'data': example_data})
 
 
-@route('hardcodedjson/1')
+@route('/hardcodedjson/1')
 def hardcoded_json_1():
     example_data = {'key1': 'keykey1', 'value2': 'valval2',
                     'list': ['something3', 'something4', 'something5']}
@@ -28,20 +28,20 @@ def hardcoded_json_1():
     return json.dumps(example_data)
 
 
-@route('getuserdata/<user_id>')
+@route('/getuserdata/<user_id>')
 def getuserdata(user_id):
     user_data = get_silly_data(user_id)
     response.content_type = 'application/json'
     return user_data.raw_data_as_json_str()
 
 
-@post('postuserdata/<user_id>')
+@post('/postuserdata/<user_id>')
 def postuserdata(user_id):
     posted_data = request.forms.get('posted_data')
     try:
         parsed_data = json.loads(posted_data)
     except ValueError:
-        response.status_code = 500
+        response.status = 500
         return 'Error parsing JSON post data'
 
     user_data = get_silly_data(user_id)
@@ -62,8 +62,8 @@ app = bottle.app()
 
 @error(403)
 def error403(code):
-    return respond('403.html', {code})
+    return respond('403.html')
 
 @error(404)
 def error404(code):
-    return respond('404.html', {code})
+    return respond('404.html')

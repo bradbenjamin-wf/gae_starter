@@ -1,6 +1,6 @@
 *.pyc
 .idea/
-*/.svn/
+*.svn
 lib/*
 
 # except don't ignore this file

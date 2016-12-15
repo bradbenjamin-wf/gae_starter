@@ -12,4 +12,12 @@
   {% for val in data.list %}
     <li>{{val}}</li>
   {% endfor %}
+
+  <br><br><hr>
+  If you'd like to test getuserdata and postuserdata, this mini-form set to write to user 1337.<br>
+  After saving valid JSON locally, you can click SDK Console in AppEngineLauncher and click Datastore Viewer to view it.
+  <form action="/postuserdata/1337" method="POST">
+    <input type="text" name="posted_data" />
+    <input type="submit" name="submit" value="Set user data" />
+  </form>
 {%endblock%}
