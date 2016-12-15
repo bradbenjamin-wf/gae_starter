@@ -12,8 +12,6 @@ from core import respond
 from google.appengine.ext.webapp.util import run_wsgi_app
 
 
-
-
 @route('/')
 def index():
     # example_data is to show how to use params in index.html jinja2 template
