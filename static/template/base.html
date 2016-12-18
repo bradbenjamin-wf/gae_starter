@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>{% block title %}GAE Starter{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="/css/minireset.min.css" rel="stylesheet">
+    <link href="/css/site.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    {%block extrastyle %}{%endblock%}
+  </head>
+
+  <body>
+
+      {% block body %} {%endblock%}
+   
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    {% block extrascripts %}{% endblock %}
+  </body>
+</html>

@@ -1,24 +1,24 @@
-application: downtime-toy
+application: gae-starter
 version: 1
 runtime: python27
 api_version: 1
-threadsafe: no
+threadsafe: false
 
 handlers:
 - url: /favicon\.ico
-  static_files: img/favicon.ico
+  static_files: static/img/favicon.ico
   upload: img/favicon.ico
 - url: /css
-  static_dir: css
+  static_dir: static/css
 - url: /js
-  static_dir: js
+  static_dir: static/js
 - url: /img
-  static_dir: img
-- url: /.*
-  script: main.py
+  static_dir: static/img
+- url: .*
+  script: src.main.app
 
-builtins:
-- appstats: on
+# builtins:
+# - appstats: on
 
 libraries:
 - name: webapp2

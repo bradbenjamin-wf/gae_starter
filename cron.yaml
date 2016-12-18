@@ -1,4 +1,0 @@
-cron:
-- description: Site Checks
-  url: /cron/site_checks
-  schedule: every 5 minutes
