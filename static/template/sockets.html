@@ -1,0 +1,57 @@
+{%extends "base.html"%}
+
+{%block title%}GAE Starter{%endblock%}
+
+
+{% block extrastyle %}
+<script type="text/javascript" src="/_ah/channel/jsapi"></script>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">google.load("jquery", "1"); google.load("jqueryui", "1");</script>
+
+{% endblock %}
+
+{%block body%}
+
+  Listening on {{cid}}
+  <div id="messages">
+
+  </div>
+
+  <script type="text/javascript">
+        // channel api management
+        function onOpened() {
+          connected = true;
+          window.alert('connected to server');
+        }
+        function onClosed() {
+          window.alert('channel connection closed.');
+        }
+        function onMessage(m) {
+          var newMessage;
+          newMessage = JSON.parse(m.data);
+          var span = $('<span />').html(newMessage.msg);
+          $('div#messages').append(span);
+          $('div#messages').append($('<br>'));
+        }
+        /**
+         * Opens a Channel.
+         */
+        function openChannel(token) {
+          var channel, handler, socket;
+          channel = new goog.appengine.Channel(token);
+          handler = {
+            'onopen': onOpened,
+            'onmessage': onMessage,
+            'onerror': function () {},
+            'onclose': function () {alert("channel closed.")}
+          };
+          socket = channel.open(handler);
+          socket.onopen = onOpened;
+          socket.onclose = onClosed;
+          socket.onmessage = onMessage;
+        }
+        openChannel('{{token}}');
+      </script>
+
+
+  {%endblock%}

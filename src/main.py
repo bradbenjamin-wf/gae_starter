@@ -1,11 +1,16 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 # if you add a dependency to to requirements.txt, you need these 2 lines
 # before you use those dependencies, see lib/README.md
+from google.appengine.api import channel
 from google.appengine.ext import vendor
 vendor.add('lib')
 
 import bottle
 import json
+import time
+import uuid
 from bottle import route, post, template, error, request, response
 from models import get_silly_data
 from core import respond
@@ -19,6 +24,16 @@ def index():
                     'list': ['something3', 'something4', 'something5']}
     return respond('index.html', params={'data': example_data})
 
+@route('/sockets')
+def sockets():
+    cid = str(uuid.uuid4())
+    token = channel.create_channel(cid)
+    return respond('sockets.html', params={'cid': cid, 'token': token})
+
+@route('/sockets/<uuid>')
+def publish(uuid):
+    channel.send_message(uuid, json.dumps({'msg': u'✔ sockets baby!'}))
+    return 'OK, sent'
 
 @route('/hardcodedjson/1')
 def hardcoded_json_1():
